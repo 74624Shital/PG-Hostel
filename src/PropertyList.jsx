@@ -1,302 +1,167 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
-// ✅ Reusable Card Component
+/* ✅ CARD */
 function PropertyCard({ property }) {
   return (
-    <div
-      style={{
-        display: "flex", // horizontal layout (image + content)
-        background: "#fff",
-        borderRadius: "12px",
-        overflow: "hidden",
-        marginBottom: "20px",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-      }}
-    >
-      {/* 🔹 LEFT SIDE IMAGE */}
-      <div style={{ position: "relative", width: "40%" }}>
+    <div className="flex flex-col md:flex-row bg-white rounded-2xl shadow-md overflow-hidden mb-6 hover:shadow-xl transition">
+
+      {/* IMAGE */}
+      <div className="relative md:w-[40%]">
         <img
           src={property.img}
           alt={property.name}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
+          className="w-full h-52 md:h-full object-cover"
         />
 
-        {/* 🔸 Badge (Preferred tag) */}
-        <span
-          style={{
-            position: "absolute",
-            top: "10px",
-            left: "10px",
-            background: "#facc15",
-            padding: "4px 8px",
-            borderRadius: "6px",
-            fontSize: "12px",
-            fontWeight: "500",
-          }}
-        >
-          Preferred by {property.preferred}
+        <span className="absolute top-3 left-3 bg-yellow-400 text-xs px-2 py-1 rounded">
+          {property.preferred}
         </span>
-
-        {/* 🔸 Bottom strip */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            width: "100%",
-            background: "#6ee7b7",
-            padding: "6px",
-            fontSize: "12px",
-            textAlign: "center",
-          }}
-        >
-          1 Person Visiting Today
-        </div>
       </div>
 
-      {/* 🔹 RIGHT SIDE CONTENT */}
-      <div style={{ padding: "16px", flex: 1 }}>
-        
-        {/* 🔸 Title + Gender */}
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <h3 style={{ margin: 0 }}>{property.name}</h3>
+      {/* CONTENT */}
+      <div className="p-4 flex-1">
+        <div className="flex justify-between items-center">
+          <h3 className="font-bold text-lg">{property.name}</h3>
 
-          <span
-            style={{
-              background: "#f3f4f6",
-              padding: "4px 10px",
-              borderRadius: "20px",
-              fontSize: "12px",
-            }}
-          >
+          <span className="bg-gray-100 px-3 py-1 rounded-full text-xs">
             {property.gender}
           </span>
         </div>
 
-        {/* 🔸 Location */}
-        <p style={{ color: "#6b7280", margin: "4px 0 10px" }}>
-          PG in {property.location}
+        <p className="text-gray-500 text-sm mt-1">
+          {property.location}, {property.city}
         </p>
 
-        {/* 🔸 Amenities */}
-        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-          {property.amenities.map((item, index) => (
-            <span
-              key={index}
-              style={{
-                background: "#ecfeff",
-                padding: "4px 10px",
-                borderRadius: "20px",
-                fontSize: "12px",
-              }}
-            >
-              {item}
+        <div className="flex flex-wrap gap-2 mt-2 text-xs">
+          {property.amenities.map((a, i) => (
+            <span key={i} className="bg-gray-100 px-2 py-1 rounded">
+              {a}
             </span>
           ))}
         </div>
 
-        {/* 🔸 Room Types */}
-        <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
-          {property.rooms.map((room, i) => (
-            <span
-              key={i}
-              style={{
-                border: "1px solid #ddd",
-                padding: "4px 10px",
-                borderRadius: "20px",
-                fontSize: "12px",
-              }}
-            >
-              {room}
-            </span>
-          ))}
-        </div>
-
-        {/* 🔸 Price + Buttons */}
-        <div
-          style={{
-            marginTop: "15px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          {/* Price */}
-          <div>
-            <p style={{ margin: 0, fontSize: "12px", color: "#888" }}>
-              Starts from
-            </p>
-            <h3 style={{ margin: 0 }}>
-              ₹{property.price}/mo*
-            </h3>
-          </div>
-
-          {/* Buttons */}
-          <div style={{ display: "flex", gap: "10px" }}>
-            <button
-              style={{
-                background: "#2dc8a0",
-                color: "#fff",
-                border: "none",
-                padding: "10px 14px",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
-            >
-              SCHEDULE A VISIT
-            </button>
-
-            <button
-              style={{
-                border: "1px solid #2dc8a0",
-                color: "#2dc8a0",
-                padding: "10px 14px",
-                borderRadius: "8px",
-                cursor: "pointer",
-                background: "#fff",
-              }}
-            >
-              REQUEST A CALLBACK
-            </button>
-          </div>
-        </div>
+        <h3 className="text-[#ff7a00] font-bold mt-3">
+          ₹{property.price}/mo
+        </h3>
       </div>
     </div>
   );
 }
 
-// ✅ MAIN PAGE COMPONENT
-export default function PropertyList() {
+/* ✅ MAIN COMPONENT */
+export default function PropertyList({ selectedFilters = {} }) {
 
-  // 🔥 10 PG DATA
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const city = queryParams.get("city");
+
+  // ✅ SAFE DEFAULT (VERY IMPORTANT)
+  const filters = {
+    locality: selectedFilters.locality || [],
+    gender: selectedFilters.gender || [],
+    preferred: selectedFilters.preferred || [],
+    budget: selectedFilters.budget || [],
+  };
+
   const properties = [
     {
       id: 1,
       name: "Whitehaven House",
       location: "Wagholi",
+      city: "Pune",
       gender: "Female",
-      price: "10,499",
+      price: 10499,
       preferred: "Students",
       img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",
-      amenities: ["Attached Balcony", "Attached Washroom"],
-      rooms: ["Double", "Triple"],
+      amenities: ["Balcony"],
     },
     {
       id: 2,
       name: "Austin House",
-      location: "Kondhwa",
-      gender: "Unisex",
-      price: "9,200",
-      preferred: "Students",
+      location: "Baner",
+      city: "Pune",
+      gender: "Male",
+      price: 9200,
+      preferred: "Working",
       img: "https://images.unsplash.com/photo-1554995207-c18c203602cb",
-      amenities: ["Attached Washroom"],
-      rooms: ["Single", "Double"],
+      amenities: ["WiFi"],
     },
     {
       id: 3,
-      name: "Green Nest PG",
-      location: "Baner",
-      gender: "Male",
-      price: "8,500",
+      name: "Mumbai PG Elite",
+      location: "Andheri",
+      city: "Mumbai",
+      gender: "Unisex",
+      price: 15000,
       preferred: "Working",
       img: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae",
-      amenities: ["WiFi", "AC"],
-      rooms: ["Double"],
-    },
-    {
-      id: 4,
-      name: "Urban Stay",
-      location: "Wakad",
-      gender: "Unisex",
-      price: "7,800",
-      preferred: "Students",
-      img: "https://images.unsplash.com/photo-1493809842364-78817add7ffb",
-      amenities: ["Food", "Laundry"],
-      rooms: ["Single", "Triple"],
-    },
-    {
-      id: 5,
-      name: "Comfort Living",
-      location: "Hinjewadi",
-      gender: "Male",
-      price: "11,000",
-      preferred: "Working",
-      img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914",
-      amenities: ["Parking", "AC"],
-      rooms: ["Single"],
-    },
-    {
-      id: 6,
-      name: "Royal PG",
-      location: "Kharadi",
-      gender: "Female",
-      price: "9,500",
-      preferred: "Students",
-      img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      amenities: ["WiFi", "Laundry"],
-      rooms: ["Double"],
-    },
-    {
-      id: 7,
-      name: "Prime Stay",
-      location: "Viman Nagar",
-      gender: "Unisex",
-      price: "12,000",
-      preferred: "Working",
-      img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be",
-      amenities: ["AC", "Food"],
-      rooms: ["Single"],
-    },
-    {
-      id: 8,
-      name: "Elite PG",
-      location: "Magarpatta",
-      gender: "Male",
-      price: "8,800",
-      preferred: "Students",
-      img: "https://images.unsplash.com/photo-1560448204-603b3fc33ddc",
-      amenities: ["Gym", "WiFi"],
-      rooms: ["Triple"],
-    },
-    {
-      id: 9,
-      name: "Happy Homes",
-      location: "Hadapsar",
-      gender: "Female",
-      price: "7,500",
-      preferred: "Working",
-      img: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-      amenities: ["Laundry"],
-      rooms: ["Double"],
-    },
-    {
-      id: 10,
-      name: "Silver Residency",
-      location: "Kothrud",
-      gender: "Unisex",
-      price: "10,000",
-      preferred: "Students",
-      img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64",
-      amenities: ["Parking", "WiFi"],
-      rooms: ["Single", "Double"],
+      amenities: ["AC"],
     },
   ];
 
+  /* 🔥 FULL FILTER LOGIC */
+  const filtered = properties.filter((p) => {
+
+    // ✅ CITY FILTER (FROM NAVBAR)
+    if (city && p.city.toLowerCase() !== city.toLowerCase()) {
+      return false;
+    }
+
+    // LOCALITY
+    if (
+      filters.locality.length > 0 &&
+      !filters.locality.includes(p.location)
+    ) return false;
+
+    // GENDER
+    if (
+      filters.gender.length > 0 &&
+      !filters.gender.includes(p.gender)
+    ) return false;
+
+    // PREFERRED
+    if (
+      filters.preferred.length > 0 &&
+      !filters.preferred.includes(p.preferred)
+    ) return false;
+
+    // BUDGET
+    if (filters.budget.length > 0) {
+      const price = p.price;
+
+      const match = filters.budget.some((b) => {
+        if (b === "Under 10000") return price < 10000;
+        if (b === "10000-15000") return price >= 10000 && price <= 15000;
+        if (b === "15000-20000") return price >= 15000 && price <= 20000;
+        if (b === "20000+") return price > 20000;
+        return false;
+      });
+
+      if (!match) return false;
+    }
+
+    return true;
+  });
+
   return (
-    <div
-      style={{
-        width: "90%",
-        maxWidth: "1100px",
-        margin: "20px auto",
-      }}
-    >
-      {/* 🔁 LOOP ALL PROPERTIES */}
-      {properties.map((property) => (
-        <PropertyCard key={property.id} property={property} />
-      ))}
+    <div className="max-w-6xl mx-auto px-4 py-6">
+
+      {/* HEADER */}
+      <h2 className="text-xl font-bold mb-4">
+        Showing: {city || "All Cities"}
+      </h2>
+
+      {filtered.length === 0 ? (
+        <h2 className="text-center text-gray-500">
+          No PG found 😢
+        </h2>
+      ) : (
+        filtered.map((p) => (
+          <PropertyCard key={p.id} property={p} />
+        ))
+      )}
+
     </div>
   );
 }

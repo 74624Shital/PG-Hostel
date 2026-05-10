@@ -1,111 +1,170 @@
-import React from "react"; // import React
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-// logo component using SVG
+// 🔥 LOGO
 const StanzaLogo = () => (
-  <svg viewBox="0 0 40 40" className="w-8 h-8" fill="none"> {/* svg container */}
-    <polygon points="20,2 38,11 38,29 20,38 2,29 2,11" fill="#2dc8a0" /> {/* outer hexagon */}
-    <path d="M13 20 L20 14 L27 20 L27 27 L13 27 Z" fill="white" opacity="0.9" /> {/* inner house shape */}
-    <rect x="17" y="22" width="6" height="5" fill="#2dc8a0" /> {/* small door */}
-  </svg>
+  <div className="flex items-center gap-2 sm:gap-3">
+    <div className="relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
+      <div className="absolute inset-0 bg-[#ff7a00] rounded-xl blur-lg opacity-30"></div>
+
+      <div className="relative w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#1e3a5f] to-[#0d1b2e] rounded-xl flex items-center justify-center shadow-lg">
+        <svg viewBox="0 0 24 24" className="w-6 h-6 sm:w-7 sm:h-7">
+          <path d="M4 11 L12 5 L20 11 V20 H4 Z" fill="white" />
+          <rect x="10" y="14" width="4" height="6" fill="#ff7a00" />
+        </svg>
+      </div>
+    </div>
+
+    <div className="leading-tight">
+      <h1 className="text-base sm:text-lg font-extrabold text-white">
+        Stayzeno
+      </h1>
+      <p className="text-[9px] sm:text-[10px] font-semibold text-[#ff7a00] tracking-[2px] sm:tracking-[3px]">
+        LIVING
+      </p>
+    </div>
+  </div>
 );
 
-// footer links data (object with sections)
-const footerLinks = {
-  Company: ["About Us", "Careers", "Press", "Blog"], // company links
-  Support: ["Help Center", "Contact Us", "Safety", "Cancellation Policy"], // support links
-  Cities: ["Pune", "Bangalore", "Hyderabad", "Delhi", "Mumbai"], // cities list
-  Legal: ["Privacy Policy", "Terms of Service", "Cookie Policy"], // legal links
-};
+export default function Footer() {
+  const navigate = useNavigate();
 
-export default function Footer() { // main footer component
+  const footerLinks = {
+    Company: [
+      { label: "Home", path: "/" },
+      { label: "About", path: "/about" },
+      { label: "Owner", path: "/owner" },
+      { label: "Contact", path: "/contact" },
+    ],
+    Support: [
+      { label: "Help Center", path: "/" },
+      { label: "Safety", path: "/" },
+    ],
+    Cities: [
+      { label: "Pune", path: "/properties?city=pune" },
+      { label: "Mumbai", path: "/properties?city=mumbai" },
+      { label: "Bangalore", path: "/properties?city=bangalore" },
+    ],
+    Legal: [
+      { label: "Privacy Policy", path: "/" },
+      { label: "Terms of Service", path: "/" },
+    ],
+  };
+
   return (
-    <footer className="bg-white border-t border-gray-200 px-8 py-10">
-      {/* main footer container */}
+    <footer className="relative bg-gradient-to-br from-[#0d1b2e] via-[#12263f] to-[#0a1626] border-t border-[#1e3050] px-3 sm:px-4 md:px-8 py-10 sm:py-12 overflow-hidden">
+      
+      {/* 🔥 BACKGROUND GLOW */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-72 h-72 bg-[#1e3a5f] opacity-20 blur-3xl rounded-full"></div>
+        <div className="absolute bottom-0 right-0 w-72 h-72 bg-[#0d3b66] opacity-20 blur-3xl rounded-full"></div>
+      </div>
 
-      <div className="max-w-6xl mx-auto">
-        {/* center align content */}
+      <div className="max-w-7xl mx-auto relative z-10">
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
-          {/* grid: 2 columns small screen, 5 columns medium+ */}
+        {/* 🔝 TOP */}
+        <div
+          className="
+            grid
+            gap-8 sm:gap-10
+            grid-cols-1
+            sm:grid-cols-2
+            md:grid-cols-3
+            lg:grid-cols-5
+            mb-8 sm:mb-10
+          "
+        >
 
-          {/* Brand Section */}
-          <div className="col-span-2 md:col-span-1">
-            {/* takes 2 columns on small, 1 on medium */}
-
-            <div className="flex items-center gap-2 mb-3">
-              <StanzaLogo /> {/* show logo */}
-              
-              <div className="leading-tight">
-                <span className="block text-sm font-bold text-gray-900">
-                  stanza
-                </span>
-                <span className="block text-sm font-bold text-gray-900">
-                  living
-                </span>
-              </div>
+          {/* 🔷 LOGO (UPDATED WITH SOCIAL ICONS) */}
+          <div className="lg:col-span-1">
+            <div className="mb-3 sm:mb-4">
+              <StanzaLogo />
             </div>
 
-            <p className="text-xs text-gray-500 leading-relaxed">
-              Tech-enabled coliving spaces designed for the modern resident.
+            <p className="text-xs sm:text-sm text-[#7a93b0] max-w-xs">
+              Modern co-living spaces designed for comfort, convenience, and smart living.
             </p>
-            {/* small description text */}
+
+            {/* 🔥 SOCIAL ICONS - Updated with SVGs */}
+            <div className="flex gap-3 mt-4">
+              {[
+                { 
+                  name: "Facebook", 
+                  icon: (
+                    <svg fill="currentColor" viewBox="0 0 24 24" className="w-5 h-5">
+                      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1V12h3l-.5 3H13v6.8c4.56-.93 8-4.96 8-9.8z" />
+                    </svg>
+                  )
+                },
+                { 
+                  name: "Instagram", 
+                  icon: (
+                    <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" className="w-5 h-5">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                    </svg>
+                  ) 
+                },
+                { 
+                  name: "YouTube", 
+                  icon: (
+                    <svg fill="currentColor" viewBox="0 0 24 24" className="w-5 h-5">
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                    </svg>
+                  ) 
+                },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="w-9 h-9 flex items-center justify-center rounded-lg bg-[#1a2b40] text-white hover:bg-[#ff7a00] transition cursor-pointer"
+                  title={item.name}
+                >
+                  {item.icon}
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Links Sections */}
+          {/* 🔗 LINKS */}
           {Object.entries(footerLinks).map(([section, links]) => (
-            // convert object into array and loop
-
-            <div key={section}> {/* each section */}
-
-              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider mb-3">
-                {section} {/* section name */}
+            <div key={section}>
+              <h4 className="text-xs sm:text-sm font-bold text-[#ff7a00] uppercase mb-3 sm:mb-4">
+                {section}
               </h4>
 
-              <ul className="space-y-2">
-                {/* list of links */}
-
+              <ul className="space-y-1.5 sm:space-y-2">
                 {links.map((link) => (
-                  // loop through links
-
-                  <li key={link}>
-                    <a
-                      href="#" // link (currently dummy)
-                      className="text-xs text-gray-500 hover:text-[#2dc8a0] transition-colors"
+                  <li key={link.label}>
+                    <span
+                      onClick={() => navigate(link.path)}
+                      className="text-xs sm:text-sm text-[#7a93b0] hover:text-white cursor-pointer transition"
                     >
-                      {link} {/* display link text */}
-                    </a>
+                      {link.label}
+                    </span>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
+
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-          {/* bottom section with top border */}
-
-          <p className="text-xs text-gray-400">
-            © {new Date().getFullYear()} Stanza Living. All rights reserved.
+        
+        <div className="border-t border-[#1e3050] pt-4 sm:pt-6 flex flex-col items-center justify-center gap-2 text-center">
+          
+          <p className="text-xs sm:text-sm text-[#4a6680]">
+            © {new Date().getFullYear()} Stayzeno Living. All rights reserved.
           </p>
-          {/* current year using JS Date */}
 
-          <div className="flex items-center gap-4">
-            {/* social links */}
+          <p className="text-xs sm:text-sm text-[#4a6680]">
+            Designed & Developed by Wisdom Tech IT Services
+          </p>
 
-            {["Twitter", "Instagram", "LinkedIn", "Facebook"].map((s) => (
-              // loop social names
+          
 
-              <a
-                key={s} // unique key
-                href="#" // dummy link
-                className="text-xs text-gray-400 hover:text-[#2dc8a0] transition-colors"
-              >
-                {s} {/* show social name */}
-              </a>
-            ))}
-          </div>
         </div>
+
       </div>
     </footer>
   );

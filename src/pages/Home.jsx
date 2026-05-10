@@ -1,41 +1,4 @@
-// import React from "react";
-// import Hero from "../components/Hero";
-// import Filters from "../components/Filters";
-// import Features from "../components/Features";
-// import PropertyCard from "../components/PropertyCard";
-// import properties from "../data/properties";
-// console.log("Home loaded");
-// function Home() {
-//   return (
-//     <div className="bg-gray-50 min-h-screen">
-      
-//       {/* HERO SECTION */}
-//       <Hero />
-
-//       {/* FILTERS */}
-//       <Filters />
-
-//       {/* PROPERTY LIST */}
-//       <section className="px-6 py-8">
-//         <h2 className="text-2xl font-bold mb-4">PG in Pune</h2>
-
-//         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-//           {properties.map((p) => (
-//             <PropertyCard key={p.id || p.name} property={p} />
-//           ))}
-//         </div>
-//       </section>
-
-//       {/* FEATURES */}
-//       <Features />
-
-//     </div>
-//   );
-// }
-
-// export default Home;
-
-import React from "react";
+import React, { useState, useMemo } from "react";
 import Hero from "../components/Hero";
 import Filters from "../components/Filters";
 import Features from "../components/Features";
@@ -43,23 +6,114 @@ import PropertyCard from "../components/PropertyCard";
 import properties from "../data/properties";
 
 function Home() {
+  const [searchCity, setSearchCity] = useState("");
 
-  // 🔍 DEBUG HERE
-  console.log(PropertyCard);
+  const [selectedFilters, setSelectedFilters] = useState({
+    locality: [],
+    budget: [],
+    gender: [],
+    preferred: [],
+  });
+
+  const filteredProperties = useMemo(() => {
+    return properties.filter((p) => {
+
+      // 🔥 CITY + AREA + LOCATION SEARCH
+      if (searchCity && searchCity.trim() !== "") {
+        const value = searchCity.toLowerCase().trim();
+
+        const match =
+          p?.city?.toLowerCase().includes(value) ||
+          p?.area?.toLowerCase().includes(value) ||
+          p?.location?.toLowerCase().includes(value);
+
+        if (!match) return false;
+      }
+
+      // ✅ LOCALITY FILTER
+      if (selectedFilters.locality?.length) {
+        const match = selectedFilters.locality.some(
+          (val) =>
+            p?.area &&
+            val &&
+            p.area.toLowerCase().trim() === val.toLowerCase().trim()
+        );
+        if (!match) return false;
+      }
+
+      // ✅ GENDER
+      if (selectedFilters.gender?.length) {
+        const match = selectedFilters.gender.some(
+          (val) =>
+            p?.gender &&
+            val &&
+            p.gender.toLowerCase().trim() === val.toLowerCase().trim()
+        );
+        if (!match) return false;
+      }
+
+      // ✅ PREFERRED
+      if (selectedFilters.preferred?.length) {
+        const match = selectedFilters.preferred.some(
+          (val) =>
+            p?.preferred &&
+            val &&
+            p.preferred.toLowerCase().trim() === val.toLowerCase().trim()
+        );
+        if (!match) return false;
+      }
+
+      // ✅ BUDGET
+      if (selectedFilters.budget?.length) {
+        const price = Number(p?.price) || 0;
+
+        const match = selectedFilters.budget.some((b) => {
+          if (b === "Under 10000") return price < 10000;
+          if (b === "10000-15000") return price >= 10000 && price <= 15000;
+          if (b === "15000-20000") return price >= 15000 && price <= 20000;
+          if (b === "20000+") return price > 20000;
+          return false;
+        });
+
+        if (!match) return false;
+      }
+
+      return true;
+    });
+  }, [selectedFilters, searchCity]);
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <Hero />
-      <Filters />
 
-      <section className="px-6 py-8">
-        <h2 className="text-2xl font-bold mb-4">PG in Pune</h2>
+      {/* HERO */}
+      <Hero onSearch={setSearchCity} />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {properties.map((p) => (
-            <PropertyCard key={p.id} property={p} />
-          ))}
+      {/* FILTERS */}
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 mt-4 sm:mt-6">
+        <Filters setSelectedFilters={setSelectedFilters} />
+      </div>
+
+      {/* PROPERTIES */}
+      <section className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-10">
+        
+        <div className="flex justify-between mb-5">
+          <h2 className="text-xl font-bold">PG Listings</h2>
+          <p className="text-sm text-gray-500">
+            {filteredProperties.length} results
+          </p>
         </div>
+
+        {filteredProperties.length === 0 ? (
+          <div className="text-center py-10 text-gray-400">
+            ❌ No properties found
+          </div>
+        ) : (
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {filteredProperties.map((p) => (
+              <PropertyCard key={p.id} property={p} />
+            ))}
+          </div>
+        )}
       </section>
 
       <Features />

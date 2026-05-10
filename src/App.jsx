@@ -1,44 +1,75 @@
-import React from "react"; // import React
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // import routing
+import React, { lazy, Suspense } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 
-import Navbar from "./components/Navbar"; // navbar component
-import Footer from "./components/Footer"; // footer component
-import Home from "./pages/Home"; // home page
-import PropertyList from "./PropertyList"; // property list page
-import WhatsAppButton from "./components/WhatsAppButton"; // whatsapp button
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import WhatsAppButton from "./components/WhatsAppButton";
+import PGListing from "./pages/PGListing";
+// pages
+const Home = lazy(() => import("./pages/Home"));
+const Owner = lazy(() => import("./pages/Owner"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const PropertyList = lazy(() => import("./PropertyList"));
+const AdminRoutes = lazy(() => import("./admin/routes/AdminRoutes"));
+const PropertyDetails = lazy(() => import("./pages/PropertyDetails"));
 
-export default function App() { // main App component
+// ✅ IMPORT DATA
+import properties from "./data/properties";
+
+const PageWrapper = ({ children }) => (
+  <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6">
+    {children}
+  </div>
+);
+
+function Layout() {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin");
+
   return (
-    <Router>
-      {/* enables routing */}
+    <>
+      {!isAdmin && <Navbar />}
 
-      <div className="min-h-screen flex flex-col">
-        {/* full height layout */}
+      <main className={`${!isAdmin ? "pt-16 sm:pt-20" : ""} min-h-screen bg-[#f9fafb]`}>
 
-        {/* NAVBAR */}
-        <Navbar />
+        <Suspense fallback={<div className="p-4 text-center">Loading...</div>}>
 
-        {/* MAIN CONTENT */}
-        <main className="flex-1">
           <Routes>
-            {/* routes */}
 
-            <Route path="/" element={<Home />} />
-            {/* home page */}
+            {/* USER ROUTES */}
+            <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
+            <Route path="/owner" element={<PageWrapper><Owner /></PageWrapper>} />
+            <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
+            <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
+            <Route path="/properties" element={<PageWrapper><PropertyList /></PageWrapper>} />
+            <Route path="/pg-listing" element={<PGListing />} />
 
-            <Route path="/properties" element={<PropertyList />} />
-            {/* property page */}
+            {/* ⭐ FIXED ROUTE (IMPORTANT) */}
+            <Route
+              path="/property/:id"
+              element={<PageWrapper><PropertyDetails properties={properties} /></PageWrapper>}
+            />
+
+            {/* ADMIN */}
+            <Route path="/admin/*" element={<AdminRoutes />} />
 
           </Routes>
-        </main>
 
-        {/* FOOTER */}
-        <Footer />
+        </Suspense>
 
-        {/* WHATSAPP BUTTON */}
-        <WhatsAppButton />
+      </main>
 
-      </div>
+      {!isAdmin && <Footer />}
+      {!isAdmin && <WhatsAppButton />}
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <Layout />
     </Router>
   );
 }

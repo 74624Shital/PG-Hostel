@@ -1,74 +1,94 @@
-const pgData = [ // array of PG data
+const pgData = [
 
-  // Pune city data
-  { city: "Pune", name: "Viman Nagar PG" }, // PG name
-  { city: "Pune", name: "Koregaon Park Residences" },
-  { city: "Pune", name: "Hinjewadi Tech Park PG" },
-  { city: "Pune", name: "Wakad Co-Living Spaces" },
-  { city: "Pune", name: "Baner Premium PG" },
-  { city: "Pune", name: "Kothrud Student Housing" },
-  { city: "Pune", name: "Shivaji Nagar PG" },
-  { city: "Pune", name: "Hadapsar Residency PG" },
-  { city: "Pune", name: "Magarpatta City PG" },
-  { city: "Pune", name: "Pune Cantonment Residences" },
+  // 🔵 PUNE
+  { id: 1, city: "Pune", area: "Baner", name: "Baner Premium PG", price: 11000, gender: "Unisex", type: "Working",
+    img: "https://source.unsplash.com/400x300/?bedroom", rating: 4.5, occupancy: "Single / Double" },
 
-  // Mumbai city data
-  { city: "Mumbai", name: "Andheri East PG" },
-  { city: "Mumbai", name: "Andheri West Co-Living" },
-  { city: "Mumbai", name: "Bandra Premium PG" },
-  { city: "Mumbai", name: "Bandra Co-Living Spaces" },
-  { city: "Mumbai", name: "Powai Lake View PG" },
-  { city: "Mumbai", name: "Ghatkopar East PG" },
-  { city: "Mumbai", name: "Dadar Central PG" },
-  { city: "Mumbai", name: "Kurla Residency PG" },
-  { city: "Mumbai", name: "Thane Ghodbunder PG" },
-  { city: "Mumbai", name: "Navi Mumbai Vashi PG" },
+  { id: 2, city: "Pune", area: "Wakad", name: "Wakad Co-Living", price: 8500, gender: "Male", type: "Students",
+    img: "https://source.unsplash.com/400x300/?hostel", rating: 4.2, occupancy: "Triple" },
 
-  // Nagpur city data
-  { city: "Nagpur", name: "Sitabuldi PG" },
-  { city: "Nagpur", name: "Dharampeth Residency" },
-  { city: "Nagpur", name: "Manish Nagar PG" },
+  { id: 3, city: "Pune", area: "Hinjewadi", name: "Hinjewadi Tech PG", price: 8000, gender: "Male", type: "Working",
+    img: "https://source.unsplash.com/400x300/?room", rating: 4.3, occupancy: "Double" },
 
-  // Nashik city data
-  { city: "Nashik", name: "College Road PG" },
-  { city: "Nashik", name: "Gangapur Road PG" },
-  { city: "Nashik", name: "Panchavati PG" },
+  { id: 4, city: "Pune", area: "Kothrud", name: "Kothrud Student PG", price: 7500, gender: "Male", type: "Students",
+    img: "https://source.unsplash.com/400x300/?shared-room", rating: 4.0, occupancy: "Triple" },
 
-  // Aurangabad city data
-  { city: "Aurangabad", name: "CIDCO PG" },
-  { city: "Aurangabad", name: "Station Road PG" },
+  { id: 5, city: "Pune", area: "Viman Nagar", name: "Viman Elite PG", price: 9500, gender: "Unisex", type: "Working",
+    img: "https://source.unsplash.com/400x300/?apartment", rating: 4.6, occupancy: "Single / Double" },
 
-  // Kolhapur city data
-  { city: "Kolhapur", name: "Shivaji Nagar PG" },
-  { city: "Kolhapur", name: "Rankala Lake PG" },
+  { id: 6, city: "Pune", area: "Kharadi", name: "Kharadi Residency PG", price: 9000, gender: "Female", type: "Working",
+    img: "https://source.unsplash.com/400x300/?modern-room", rating: 4.4, occupancy: "Double" },
 
-  // Solapur city data
-  { city: "Solapur", name: "Railway Station PG" },
-  { city: "Solapur", name: "Hotgi Road PG" },
+  { id: 7, city: "Pune", area: "Magarpatta", name: "Magarpatta Living PG", price: 10500, gender: "Unisex", type: "Working",
+    img: "https://source.unsplash.com/400x300/?interior", rating: 4.5, occupancy: "Single" },
 
-  // Thane city data
-  { city: "Thane", name: "Ghodbunder Road PG" },
-  { city: "Thane", name: "Kasarvadavali PG" },
+  { id: 8, city: "Pune", area: "Hadapsar", name: "Hadapsar Comfort PG", price: 8200, gender: "Male", type: "Students",
+    img: "https://source.unsplash.com/400x300/?pg-room", rating: 4.1, occupancy: "Triple" },
 
-  // Navi Mumbai city data
-  { city: "Navi Mumbai", name: "Vashi PG" },
-  { city: "Navi Mumbai", name: "Nerul Co-Living" },
+  { id: 9, city: "Pune", area: "Balewadi", name: "Balewadi Luxury PG", price: 12000, gender: "Female", type: "Working",
+    img: "https://source.unsplash.com/400x300/?luxury-room", rating: 4.7, occupancy: "Single" },
 
-  // Amravati city data
-  { city: "Amravati", name: "Camp Area PG" },
-  { city: "Amravati", name: "Rajapeth PG" },
+  { id: 10, city: "Pune", area: "Shivaji Nagar", name: "Shivaji Nagar PG", price: 7800, gender: "Male", type: "Students",
+    img: "https://source.unsplash.com/400x300/?student-room", rating: 4.0, occupancy: "Double" },
 
-  // Jalgaon city data
-  { city: "Jalgaon", name: "Ring Road PG" },
-  { city: "Jalgaon", name: "Station Area PG" },
 
-  // Latur city data
-  { city: "Latur", name: "MIDC PG" },
-  { city: "Latur", name: "Ausa Road PG" },
+  // 🔵 MUMBAI
+  { id: 11, city: "Mumbai", area: "Andheri", name: "Andheri Comfort PG", price: 14000, gender: "Unisex", type: "Working",
+    img: "https://source.unsplash.com/400x300/?city-room", rating: 4.5, occupancy: "Single / Double" },
 
-  // Akola city data
-  { city: "Akola", name: "Civil Lines PG" },
-  { city: "Akola", name: "Murtizapur Road PG" },
+  { id: 12, city: "Mumbai", area: "Bandra", name: "Bandra Elite PG", price: 18000, gender: "Female", type: "Working",
+    img: "https://source.unsplash.com/400x300/?premium-room", rating: 4.8, occupancy: "Single" },
+
+  { id: 13, city: "Mumbai", area: "Powai", name: "Powai Lake PG", price: 15000, gender: "Unisex", type: "Working",
+    img: "https://source.unsplash.com/400x300/?lake-view-room", rating: 4.6, occupancy: "Double" },
+
+  { id: 14, city: "Mumbai", area: "Dadar", name: "Dadar Central PG", price: 13000, gender: "Male", type: "Students",
+    img: "https://source.unsplash.com/400x300/?compact-room", rating: 4.2, occupancy: "Triple" },
+
+  { id: 15, city: "Mumbai", area: "Ghatkopar", name: "Ghatkopar PG", price: 12000, gender: "Male", type: "Working",
+    img: "https://source.unsplash.com/400x300/?apartment-room", rating: 4.3, occupancy: "Double" },
+
+
+  // 🔵 BANGALORE
+  { id: 16, city: "Bangalore", area: "Whitefield", name: "Whitefield Tech PG", price: 10000, gender: "Male", type: "Working",
+    img: "https://source.unsplash.com/400x300/?tech-room", rating: 4.3, occupancy: "Double" },
+
+  { id: 17, city: "Bangalore", area: "Koramangala", name: "Koramangala Nest PG", price: 13500, gender: "Unisex", type: "Students",
+    img: "https://source.unsplash.com/400x300/?co-living", rating: 4.5, occupancy: "Triple" },
+
+  { id: 18, city: "Bangalore", area: "Indiranagar", name: "Indiranagar Premium PG", price: 15000, gender: "Female", type: "Working",
+    img: "https://source.unsplash.com/400x300/?modern-apartment", rating: 4.7, occupancy: "Single" },
+
+
+  // 🔵 HYDERABAD
+  { id: 19, city: "Hyderabad", area: "Hitech City", name: "Hitech City PG", price: 9500, gender: "Male", type: "Working",
+    img: "https://source.unsplash.com/400x300/?city-hostel", rating: 4.2, occupancy: "Double" },
+
+  { id: 20, city: "Hyderabad", area: "Gachibowli", name: "Gachibowli Comfort PG", price: 11500, gender: "Female", type: "Working",
+    img: "https://source.unsplash.com/400x300/?comfort-room", rating: 4.4, occupancy: "Single / Double" },
+
+
+  // 🔵 DELHI
+  { id: 21, city: "Delhi", area: "Saket", name: "Saket Residency PG", price: 12000, gender: "Unisex", type: "Working",
+    img: "https://source.unsplash.com/400x300/?residential-room", rating: 4.3, occupancy: "Double" },
+
+  { id: 22, city: "Delhi", area: "Karol Bagh", name: "Karol Bagh PG", price: 8500, gender: "Male", type: "Students",
+    img: "https://source.unsplash.com/400x300/?budget-room", rating: 4.0, occupancy: "Triple" },
+
+
+  // 🔵 OTHER CITIES
+  { id: 23, city: "Nagpur", area: "Sitabuldi", name: "Sitabuldi PG", price: 7000, gender: "Male", type: "Students",
+    img: "https://source.unsplash.com/400x300/?simple-room", rating: 3.9, occupancy: "Triple" },
+
+  { id: 24, city: "Nashik", area: "College Road", name: "College Road PG", price: 6500, gender: "Unisex", type: "Students",
+    img: "https://source.unsplash.com/400x300/?student-hostel", rating: 4.0, occupancy: "Double" },
+
+  { id: 25, city: "Thane", area: "Ghodbunder", name: "Ghodbunder PG", price: 9500, gender: "Male", type: "Working",
+    img: "https://source.unsplash.com/400x300/?urban-room", rating: 4.2, occupancy: "Double" },
+
+  { id: 26, city: "Navi Mumbai", area: "Vashi", name: "Vashi PG", price: 10000, gender: "Unisex", type: "Working",
+    img: "https://source.unsplash.com/400x300/?flat-room", rating: 4.3, occupancy: "Single / Double" },
+
 ];
 
-export default pgData; // export data
+export default pgData;
