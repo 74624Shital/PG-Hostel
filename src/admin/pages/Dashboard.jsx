@@ -1,44 +1,43 @@
-import { lazy, Suspense } from "react";
-
-// 🔥 OPTIMIZED: lazy load heavy dashboard components
-const StatsCards = lazy(() => import("../components/dashboard/StatsCards"));
-const RevenueChart = lazy(() => import("../components/dashboard/RevenueChart"));
-const BookingChart = lazy(() => import("../components/dashboard/BookingChart"));
-const RecentBookings = lazy(() => import("../components/dashboard/RecentBookings"));
-
 export default function Dashboard() {
   return (
-    <div className="space-y-6">
+    <div>
+      <h1 className="text-3xl font-bold text-gray-800">
+        Dashboard
+      </h1>
 
-      {/* 🔷 TOP STATS */}
-      <Suspense fallback={<div>Loading...</div>}>
-        <StatsCards />
-      </Suspense>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
 
-      {/* 🔷 CHART SECTION */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white p-6 rounded-2xl shadow">
+          <h2 className="text-lg font-semibold text-gray-500">
+            Total Properties
+          </h2>
 
-        <div className="bg-white p-4 sm:p-5 rounded-2xl shadow-sm">
-          <Suspense fallback={<div>Loading...</div>}>
-            <RevenueChart />
-          </Suspense>
+          <p className="text-3xl font-bold mt-3">
+            24
+          </p>
         </div>
 
-        <div className="bg-white p-4 sm:p-5 rounded-2xl shadow-sm">
-          <Suspense fallback={<div>Loading...</div>}>
-            <BookingChart />
-          </Suspense>
+        <div className="bg-white p-6 rounded-2xl shadow">
+          <h2 className="text-lg font-semibold text-gray-500">
+            Bookings
+          </h2>
+
+          <p className="text-3xl font-bold mt-3">
+            12
+          </p>
+        </div>
+
+        <div className="bg-white p-6 rounded-2xl shadow">
+          <h2 className="text-lg font-semibold text-gray-500">
+            Users
+          </h2>
+
+          <p className="text-3xl font-bold mt-3">
+            50
+          </p>
         </div>
 
       </div>
-
-      {/* 🔷 RECENT BOOKINGS */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl shadow-sm">
-        <Suspense fallback={<div>Loading...</div>}>
-          <RecentBookings />
-        </Suspense>
-      </div>
-
     </div>
   );
 }

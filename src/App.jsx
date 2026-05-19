@@ -1,11 +1,19 @@
+
 import React, { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
 import PGListing from "./pages/PGListing";
-// pages
+
+// 🔷 LAZY PAGES
 const Home = lazy(() => import("./pages/Home"));
 const Owner = lazy(() => import("./pages/Owner"));
 const About = lazy(() => import("./pages/About"));
@@ -17,6 +25,7 @@ const PropertyDetails = lazy(() => import("./pages/PropertyDetails"));
 // ✅ IMPORT DATA
 import properties from "./data/properties";
 
+// 🔷 PAGE WRAPPER
 const PageWrapper = ({ children }) => (
   <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6">
     {children}
@@ -25,34 +34,107 @@ const PageWrapper = ({ children }) => (
 
 function Layout() {
   const location = useLocation();
+
+  // ✅ CHECK ADMIN ROUTE
   const isAdmin = location.pathname.startsWith("/admin");
 
   return (
     <>
+      {/* 🔷 USER NAVBAR */}
       {!isAdmin && <Navbar />}
 
-      <main className={`${!isAdmin ? "pt-16 sm:pt-20" : ""} min-h-screen bg-[#f9fafb]`}>
+      {/* 🔷 MAIN */}
+      <main
+        className={
+          `${!isAdmin ? "pt-16 sm:pt-20" : ""} min-h-screen bg-gray-50`
+        }
+      >
 
-        <Suspense fallback={<div className="p-4 text-center">Loading...</div>}>
+        {/* 🔷 SUSPENSE */}
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center min-h-screen">
+              <div className="text-lg font-semibold text-gray-500">
+                Loading...
+              </div>
+            </div>
+          }
+        >
 
           <Routes>
 
-            {/* USER ROUTES */}
-            <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
-            <Route path="/owner" element={<PageWrapper><Owner /></PageWrapper>} />
-            <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
-            <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
-            <Route path="/properties" element={<PageWrapper><PropertyList /></PageWrapper>} />
-            <Route path="/pg-listing" element={<PGListing />} />
-
-            {/* ⭐ FIXED ROUTE (IMPORTANT) */}
+            {/* 🔷 USER ROUTES */}
             <Route
-              path="/property/:id"
-              element={<PageWrapper><PropertyDetails properties={properties} /></PageWrapper>}
+              path="/"
+              element={
+                <PageWrapper>
+                  <Home />
+                </PageWrapper>
+              }
             />
 
-            {/* ADMIN */}
-            <Route path="/admin/*" element={<AdminRoutes />} />
+            <Route
+              path="/owner"
+              element={
+                <PageWrapper>
+                  <Owner />
+                </PageWrapper>
+              }
+            />
+
+            <Route
+              path="/about"
+              element={
+                <PageWrapper>
+                  <About />
+                </PageWrapper>
+              }
+            />
+
+            <Route
+              path="/contact"
+              element={
+                <PageWrapper>
+                  <Contact />
+                </PageWrapper>
+              }
+            />
+
+            <Route
+              path="/properties"
+              element={
+                <PageWrapper>
+                  <PropertyList />
+                </PageWrapper>
+              }
+            />
+
+            <Route
+              path="/pg-listing"
+              element={<PGListing />}
+            />
+
+            {/* 🔷 PROPERTY DETAILS */}
+            <Route
+              path="/property/:id"
+              element={
+                <PageWrapper>
+                  <PropertyDetails properties={properties} />
+                </PageWrapper>
+              }
+            />
+
+            {/* 🔷 ADMIN ROUTES */}
+            <Route
+              path="/admin/*"
+              element={<AdminRoutes />}
+            />
+
+            {/* 🔷 FALLBACK */}
+            <Route
+              path="*"
+              element={<Navigate to="/" replace />}
+            />
 
           </Routes>
 
@@ -60,7 +142,10 @@ function Layout() {
 
       </main>
 
+      {/* 🔷 FOOTER */}
       {!isAdmin && <Footer />}
+
+      {/* 🔷 WHATSAPP */}
       {!isAdmin && <WhatsAppButton />}
     </>
   );

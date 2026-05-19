@@ -8,7 +8,7 @@ export default function AdminLayout() {
 
   return (
     <div className="flex h-screen bg-gray-100 overflow-hidden">
-      
+
       {/* 🔷 SIDEBAR */}
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
 
@@ -31,16 +31,23 @@ export default function AdminLayout() {
         {/* 🔷 PAGE CONTENT */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-5 md:p-6 lg:p-8">
 
-          {/* Center container */}
+          {/* 🔷 CENTER CONTAINER */}
           <div className="w-full max-w-7xl mx-auto">
 
-            {/* ✅ ADDED: safe suspense boundary for nested lazy routes */}
-            <Suspense fallback={<div className="p-4 text-center">Loading...</div>}>
+            {/* 🔷 NESTED ROUTES */}
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center py-20">
+                  <div className="text-lg font-semibold text-gray-500">
+                    Loading...
+                  </div>
+                </div>
+              }
+            >
               <Outlet />
             </Suspense>
 
           </div>
-
         </main>
       </div>
     </div>

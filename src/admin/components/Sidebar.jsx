@@ -4,13 +4,26 @@ import { useMemo } from "react";
 export default function Sidebar({ isOpen, setIsOpen }) {
   const { pathname } = useLocation();
 
-  // ✅ OPTIMIZED: memoized menu (prevents re-creation every render)
-  const menu = useMemo(() => [
-    { name: "Dashboard", path: "/admin/dashboard" },
-    { name: "Properties", path: "/admin/properties" },
-    { name: "Bookings", path: "/admin/bookings" },
-    { name: "Users", path: "/admin/users" },
-  ], []);
+  // ✅ OPTIMIZED: memoized menu
+  const menu = useMemo(
+    () => [
+      { name: "Dashboard", path: "/admin/dashboard" },
+      { name: "Properties", path: "/admin/properties" },
+
+      // 🔷 NEW PG MANAGEMENT
+      { name: "Listings", path: "/admin/listings" },
+      { name: "Add Listing", path: "/admin/add-listing" },
+      { name: "Gallery", path: "/admin/gallery" },
+      { name: "Amenities", path: "/admin/amenities" },
+      { name: "Hero Section", path: "/admin/hero-section" },
+
+      // 🔷 OTHER PAGES
+      { name: "Bookings", path: "/admin/bookings" },
+      { name: "Users", path: "/admin/users" },
+      { name: "Settings", path: "/admin/settings" },
+    ],
+    []
+  );
 
   return (
     <>
@@ -22,20 +35,24 @@ export default function Sidebar({ isOpen, setIsOpen }) {
       )}
 
       <div
-        className={`fixed z-50 md:static top-0 left-0 h-full w-64 bg-gradient-to-b from-[#7c2d12] to-[#ea580c] text-white p-5 transform transition-transform duration-300 
+        className={`fixed z-50 md:static top-0 left-0 h-full w-64 bg-gradient-to-b from-[#7c2d12] to-[#ea580c] text-white p-5 transform transition-transform duration-300 overflow-y-auto
         ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
       >
-        <h1 className="text-2xl font-bold mb-8">PG Admin</h1>
+        {/* 🔷 LOGO */}
+        <h1 className="text-2xl font-bold mb-8">
+          PG Admin
+        </h1>
 
+        {/* 🔷 NAVIGATION */}
         <nav className="space-y-2">
           {menu.map((item) => (
             <Link
               key={item.name}
               to={item.path}
               onClick={() => setIsOpen(false)}
-              className={`block p-3 rounded-lg transition ${
+              className={`block p-3 rounded-xl transition-all duration-200 ${
                 pathname === item.path
-                  ? "bg-orange-600"
+                  ? "bg-white text-orange-600 font-semibold shadow"
                   : "hover:bg-orange-500"
               }`}
             >
